@@ -1,0 +1,19 @@
+{
+  "name": "carlot",
+  "version": "1.0.0",
+  "description": "Test Run for an automotive website",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "jquery": "^3.3.1",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.2.4"
+  }
+}

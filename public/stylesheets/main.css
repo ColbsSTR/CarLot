@@ -1,0 +1,33 @@
+#logo {
+    padding-top: 5%;
+}
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+}
+
+
+.Important {
+    font-weight: bold;
+    color: red;
+    padding: 15px;
+}
+
+.centered-div {
+    width: 80%;
+    margin: 0 auto;
+}
+
+#center {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.carousel-inner > .item > img {
+    margin: 0 auto;
+    max-height: 350px;
+}
+
+
+
