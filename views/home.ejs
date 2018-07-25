@@ -1,49 +1,98 @@
 <% include ./partials/header.ejs %>
     
 <!--Carousel-->
-<div id="home" class="carousel slide" data-ride="carousel">
+<!--<div id="home" class="carousel slide" data-ride="carousel">-->
+      <!-- Indicators -->
+<!--      <ol class="carousel-indicators">-->
+<!--        <li data-target="#home" data-slide-to="0" class=""></li>-->
+<!--        <li data-target="#home" data-slide-to="1" class=""></li>-->
+<!--        <li data-target="#home" data-slide-to="2" class="active"></li>-->
+<!--      </ol>-->
+<!--      <div class="carousel-inner" role="listbox">-->
+<!--        <div class="item">-->
+<!--          <img class="first-slide" src="https://amp.businessinsider.com/images/592f4169b74af41b008b5977-750-563.jpg" alt="First slide">-->
+<!--          <div class="container">-->
+<!--            <div class="carousel-caption">-->
+<!--              <h1>Precision Imports</h1>-->
+<!--              <p>We take pride in the reliability of our cars, and the satisfaction of our customers</p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="item active left">-->
+<!--          <img class="second-slide" src="https://www.raniericommunications.com/wp-content/uploads/2018/01/bmw-m2-road-test-0273_0.jpg" alt="Second slide">-->
+<!--          <div class="container">-->
+<!--            <div class="carousel-caption">-->
+<!--              <h1>Another example headline.</h1>-->
+<!--              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>-->
+<!--              <p><a class="btn btn-lg btn-primary" href="/cars" role="button">Learn more</a></p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="item next left">-->
+<!--          <img class="third-slide" src="https://www.porscheofranchomirage.com/assets/misc/12195/694906.jpg" alt="Third slide">-->
+<!--          <div class="container">-->
+<!--            <div class="carousel-caption">-->
+<!--              <h1>One more for good measure.</h1>-->
+<!--              <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>-->
+<!--              <p><a class="btn btn-lg btn-primary" href="/cars" role="button">Browse gallery</a></p>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      <a class="left carousel-control" href="#home" role="button" data-slide="prev">-->
+<!--        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>-->
+<!--        <span class="sr-only">Previous</span>-->
+<!--      </a>-->
+<!--      <a class="right carousel-control" href="#home" role="button" data-slide="next">-->
+<!--        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>-->
+<!--        <span class="sr-only">Next</span>-->
+<!--      </a>-->
+<!--    </div>-->
+    
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
       <!-- Indicators -->
       <ol class="carousel-indicators">
-        <li data-target="#home" data-slide-to="0" class=""></li>
-        <li data-target="#home" data-slide-to="1" class=""></li>
-        <li data-target="#home" data-slide-to="2" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="0" class=""></li>
+        <li data-target="#myCarousel" data-slide-to="1" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="2" class=""></li>
       </ol>
       <div class="carousel-inner" role="listbox">
         <div class="item">
-          <img class="first-slide" src="https://amp.businessinsider.com/images/592f4169b74af41b008b5977-750-563.jpg" alt="First slide">
+          <img class="first-slide" src="https://www.caranddriver.com/images/17q4/692996/2019-mclaren-senna-hypercar-official-photos-and-info-news-car-and-driver-photo-698055-s-original.jpg" alt="First slide">
           <div class="container">
             <div class="carousel-caption">
-              <h1>Precision Imports</h1>
-              <p>We take pride in the reliability of our cars, and the satisfaction of our customers</p>
+              <h1>Example headline.</h1>
+              <p>Note: If you're viewing this page via a <code>file://</code> URL, the "next" and "previous" Glyphicon buttons on the left and right might not load/display properly due to web browser security rules.</p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p>
             </div>
           </div>
         </div>
-        <div class="item active left">
-          <img class="second-slide" src="https://www.raniericommunications.com/wp-content/uploads/2018/01/bmw-m2-road-test-0273_0.jpg" alt="Second slide">
+        <div class="item active">
+          <img class="second-slide" src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=b7a09871cc6c6262dabde21e05b8b3f1&auto=format&fit=crop&w=500&q=60" alt="Second slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>Another example headline.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="/cars" role="button">Learn more</a></p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
             </div>
           </div>
         </div>
-        <div class="item next left">
-          <img class="third-slide" src="https://www.porscheofranchomirage.com/assets/misc/12195/694906.jpg" alt="Third slide">
+        <div class="item">
+          <img class="third-slide" src="https://images.unsplash.com/photo-1449130015084-2d48a345ae62?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bb29652e99f70314468e31f729b28f74&auto=format&fit=crop&w=1053&q=80" alt="Third slide">
           <div class="container">
             <div class="carousel-caption">
               <h1>One more for good measure.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="/cars" role="button">Browse gallery</a></p>
+              <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p>
             </div>
           </div>
         </div>
       </div>
-      <a class="left carousel-control" href="#home" role="button" data-slide="prev">
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
         <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
       </a>
-      <a class="right carousel-control" href="#home" role="button" data-slide="next">
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
         <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
