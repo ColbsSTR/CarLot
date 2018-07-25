@@ -1,33 +1,4 @@
 <% include ./partials/header.ejs %>
-
-<!--Navbar-->
-<div class="navbar-wrapper">
-      <div class="container">
-
-        <nav class="navbar navbar-inverse navbar-static-top">
-          <div class="container">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand active" href="#">Precision Imports</a>
-            </div>
-            <div id="navbar" class="navbar-collapse collapse">
-              <ul class="nav navbar-nav">
-                <li><a href="/">Home</a></li>
-                <li><a href="/cars">Inventory</a></li>
-                <li><a href="/information">Contact</a></li>
-                <li><a href="/login">Dealer Login</a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-      </div>
-    </div>
     
 <!--Carousel-->
 <div id="home" class="carousel slide" data-ride="carousel">
@@ -53,7 +24,7 @@
             <div class="carousel-caption">
               <h1>Another example headline.</h1>
               <p>Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec id elit non mi porta gravida at eget metus. Nullam id dolor id nibh ultricies vehicula ut id elit.</p>
-              <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p>
+              <p><a class="btn btn-lg btn-primary" href="/cars" role="button">Learn more</a></p>
             </div>
           </div>
         </div>
@@ -77,8 +48,8 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
-
-<div class="container" style="padding-top: 50px">
+    
+<div class="container" style="padding-top: 30px">
   <div class="row" id="center">
     <div class="col-lg-4">
       <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
@@ -95,5 +66,24 @@
   </div>
 </div>
 
+<footer>
+    <div class="container">
+      <div class="col-lg-12">
+          <div id="content">
+              <h3 class="text-uppercase mb-4 font-weight-bold">Contact</h3>
+              <hr>
+              <p>
+                <i class="fa fa-home mr-3"></i> Springdale, AR 72762, US</p>
+              <p>
+                <i class="fa fa-envelope mr-3"></i> jcrowne@pi.arprecisionimports.net</p>
+              <p>
+                <i class="fa fa-phone mr-3"></i> 479-751-7500</p>
+              <p>
+                <i class="fa fa-print mr-3"></i> + 01 234 567 89</p>
+            </div>
+        </div>
+    </div>
+    <p style="text-align:center">© 2018 Precision Imports Inc</p>
+</footer>
 
 <% include ./partials/footer.ejs %>

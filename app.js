@@ -34,10 +34,29 @@ app.get("/cars/new", function(req, res) {
     res.render("new.ejs");
 });
 
+//Information Route
 app.get("/information", function(req, res) {
     res.render("information.ejs");
 });
 
+//CREATE Route
+app.post("/cars", function(req,res) {
+    var newCar = {
+        make: req.body.make,
+        model: req.body.model,
+        year: req.body.year,
+        price: req.body.price,
+        briefdescription: req.body.briefdescription
+    };
+    
+    Car.create(newCar, function(err, car) {
+        if (err) {
+            console.log(err);
+        } else {
+            res.redirect("/cars");
+        }
+    });
+});
 //
 //Start the server
 app.listen(process.env.PORT, process.env.IP);

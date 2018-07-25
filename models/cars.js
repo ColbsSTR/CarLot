@@ -5,7 +5,8 @@ var carSchema = new mongoose.Schema({
     make: String,
     model: String,
     price: Number,
-    year: Number
+    year: Number,
+    briefdescription: String
 });
 
 var Car = mongoose.model("Car", carSchema);

@@ -1,1 +1,36 @@
-<h1>Youve reached the inventory page</h1>
+<% include ./partials/header.ejs %>
+
+<div class="jumbotron">
+    <div id="inventory-header">
+      <h1 class="display-4">Inventory</h1>
+      <div id="same-line">
+        <p class="lead">All current cars are listed here. Feel free to refine your search below.</p>
+        <!--Will need to be hidden if not logged in-->
+        <a class="btn btn-primary" href="/cars/new" role="button">Add new Car</a>
+      </div>
+      <hr class="my-4">
+      <p class="lead">
+        <!----><!----><!----> 
+        <!--Refine search here-->
+        <!----><!----><!---->
+        <% include ./refined-inventory.ejs/ %>
+      </p>
+    </div>
+</div>
+
+<% cars.forEach(function(car) { %>
+<div id="inventory-header">
+    <div class="list-group">
+      <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
+        <div class="d-flex w-100 justify-content-between">
+          <h3 class="mb-1"><%= car.model %> <%= car.make %></h3>
+          <h5>$<%=  car.price %></h5>
+          <h5><%= car.briefdescription %></h5>
+        </div>
+      </a>
+    </div>
+</div>
+<% }); %>
+
+
+<% include ./partials/footer.ejs %>
