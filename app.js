@@ -6,7 +6,7 @@ var app = express();
 var mongoose = require("mongoose");
 var $ = require("jquery");
 var Car = require("./models/cars");
-
+var refined = false;
 mongoose.connect("mongodb://localhost/carlot_v1");
 
 app.use(express.static(__dirname + "/public"));
@@ -24,9 +24,9 @@ app.get("/cars", function(req,res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("inventory.ejs", {cars: allCars});
+            res.render("inventory.ejs", {cars: allCars});               
         }
-    });
+    });   
 });
 
 //NEW Route
@@ -57,6 +57,21 @@ app.post("/cars", function(req,res) {
         }
     });
 });
+
+//Refined Inventory
+app.post("/cars/refined", function(req, res) {
+    console.log(req.body.make);
+    console.log(req.body.model);
+    Car.find({ 'make': req.body.make }, 'make model year price briefdescription', function (err, cars) {
+        if (err) {
+            console.log("HERES THE ERROR: " + err);
+        } else {
+            console.log(cars);
+            res.render("inventory.ejs", {cars: cars});
+        }
+    });
+});
+
 //
 //Start the server
 app.listen(process.env.PORT, process.env.IP);

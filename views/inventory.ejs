@@ -10,10 +10,28 @@
       </div>
       <hr class="my-4">
       <p class="lead">
-        <!----><!----><!----> 
+        <!----><!----><!---->
         <!--Refine search here-->
         <!----><!----><!---->
-        <%- include('./refined-inventory.ejs', {cars: cars}); %>
+        <!--DropDowns to refine search-->
+        <div class="row">
+          <div class="col-lg-6">
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                <% cars.forEach(function(car) { %>
+                 <form action="/cars/refined" method="POST">
+                    <div class="form-group">
+                      <input type="submit" name="make" value="<%= car.make %>">
+                    </div>
+                  </form>
+                   <% }); %>
+                </ul>
+              </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+          </div><!-- /.col-lg-6 -->
+
       </p>
     </div>
 </div>
@@ -23,7 +41,7 @@
     <div class="list-group">
       <a href="#" class="list-group-item list-group-item-action flex-column align-items-start ">
         <div class="d-flex w-100 justify-content-between">
-          <h3 class="mb-1"><%= car.model %> <%= car.make %></h3>
+          <h3 class="mb-1"><%= car.make %> <%= car.model %></h3>
           <h5>$<%=  car.price %></h5>
           <h5><%= car.briefdescription %></h5>
         </div>
@@ -31,6 +49,5 @@
     </div>
 </div>
 <% }); %>
-
 
 <% include ./partials/footer.ejs %>

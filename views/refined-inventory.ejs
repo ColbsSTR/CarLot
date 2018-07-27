@@ -2,25 +2,34 @@
 <!--Make-->
 <div class="dropdown" style="display: inline">
   <button class="btn btn-default dropdown-toggle" type="button" id="make" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Make
+    All Makes
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="make">
     <% cars.forEach(function(car) { %>
-      <li><a><%= car.make %></a></li>
+      <li>
+          <a href="/cars/refined"><%= car.make %></a>
+      </li>
     <% }); %>
   </ul>
 </div>
 
+        <!--<%- include('./refined-inventory.ejs', {cars: cars}); %>-->
+
+
 <!--Model -->
 <div class="dropdown" style="display: inline">
    <button class="btn btn-default dropdown-toggle" type="button" id="model" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-    Model
+    All Models
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelledby="model">
     <% cars.forEach(function(car) { %>
-      <li><a><%= car.model %></a></li>
+      <li>
+          <a href="/cars/refined"><%= car.model %></a>
+      </li>
     <% }); %>
   </ul>
 </div>
+
+
