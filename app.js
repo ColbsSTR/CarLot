@@ -13,6 +13,24 @@ app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
 
+//****************
+//FUNCTIONS
+//****************
+var AllCars;
+var LoadCars = function() {
+    Car.find({}, function(err, allCars) {
+        if (err) {
+            console.log(err);
+        } else {
+            AllCars = allCars;
+        }
+    });
+}
+
+//****************
+//ROUTES
+//****************
+
 //Home||landing Page
 app.get("/", function(req,res) {
     res.render("home.ejs");
@@ -24,7 +42,7 @@ app.get("/cars", function(req,res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("inventory.ejs", {cars: allCars});               
+            res.render("inventory.ejs", {cars: allCars, AllCars: allCars});               
         }
     });   
 });
@@ -58,16 +76,63 @@ app.post("/cars", function(req,res) {
     });
 });
 
+
 //Refined Inventory
 app.post("/cars/refined", function(req, res) {
-    console.log(req.body.make);
-    console.log(req.body.model);
-    Car.find({ 'make': req.body.make }, 'make model year price briefdescription', function (err, cars) {
+    LoadCars();
+    var AnyOption = "";
+    var queryString = "";
+    var make = req.body.make;
+    var model = req.body.model;
+    var year = req.body.year;
+    
+    //Delegates which aspects of the query should be anything or unique
+    if (req.body.make == "Any Make") {
+        AnyOption += "a";
+    } 
+    if (req.body.model == "Any Model") {
+        AnyOption += "b";
+    }
+    if (req.body.year == "Any Year") {
+        AnyOption += "c";
+    } else {
+        year = parseInt(req.body.year, 10);
+    }
+    
+    //Creating the Query string based off of the AnyOption Var
+    switch (AnyOption) {
+        case 'a':
+            queryString = {'model': model,'year': year}
+            break;
+        case 'b':
+            queryString = {'make': make,'year': year}
+            break;
+        case 'c':
+            queryString = {'make': make,'model': model}
+            break;
+        case 'ab':
+            queryString = {'year': year}
+            break;
+        case 'ac':
+            queryString = {'model': model}
+            break;
+        case 'bc':
+            queryString = {'make': make}
+            break;
+        case 'abc':
+            queryString = {}
+            break;
+        
+        default:
+            queryString = {'make': make,'model': model,'year': year}
+    }
+    
+    Car.find(queryString, 'make model year price briefdescription', function (err, cars) {
         if (err) {
             console.log("HERES THE ERROR: " + err);
         } else {
-            console.log(cars);
-            res.render("inventory.ejs", {cars: cars});
+            AnyOption = "";
+            res.render("inventory.ejs", {cars: cars, AllCars: AllCars});
         }
     });
 });

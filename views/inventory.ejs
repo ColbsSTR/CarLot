@@ -13,25 +13,46 @@
         <!----><!----><!---->
         <!--Refine search here-->
         <!----><!----><!---->
-        <!--DropDowns to refine search-->
-        <div class="row">
-          <div class="col-lg-6">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
-                <ul class="dropdown-menu">
-                <% cars.forEach(function(car) { %>
-                 <form action="/cars/refined" method="POST">
-                    <div class="form-group">
-                      <input type="submit" name="make" value="<%= car.make %>">
-                    </div>
-                  </form>
-                   <% }); %>
-                </ul>
-              </div><!-- /btn-group -->
-            </div><!-- /input-group -->
-          </div><!-- /.col-lg-6 -->
-
+          <div class="form-group row">
+            <form action="/cars/refined" method="POST">
+              <div class="form-group col-sm-4">
+                <label for="inputMake">Select Make</label>
+                  <select name="make" id="inputMake" class="form-control">
+                    <option value="Any Make">Any Make</option>
+                      <% AllCars.forEach(function(car) { %>
+                    <option value="<%=car.make%>">
+                      <%= car.make %>
+                    </option>
+                    <% }); %>
+                  </select>
+                </div>
+                <div class="form-group col-sm-4">
+                  <label for="inputModel">Select Model</label>
+                    <select name="model" id="inputModel" class="form-control">
+                      <option value="Any Model">Any Model</option>
+                      <% AllCars.forEach(function(car) { %>
+                        <option value="<%=car.model%>">
+                      <%= car.model %>
+                    </option>
+                  <% }); %>
+                  </select>
+                </div>
+                 <div class="form-group col-sm-4">
+                  <label for="inputYear">Select Year</label>
+                    <select name="year" id="inputYear" class="form-control">
+                      <option value="Any Year">Any Year</option>
+                      <% AllCars.forEach(function(car) { %>
+                        <option value="<%=car.year%>">
+                      <%= car.year %>
+                    </option>
+                  <% }); %>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group row">
+                <button type="submit" class="btn btn-primary">Search</button>
+              </form>
+          </div>
       </p>
     </div>
 </div>

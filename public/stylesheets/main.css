@@ -38,6 +38,12 @@ div hr {
     padding: 1%;
 }
 
+.btn-link{
+  border:none;
+  outline:none;
+  background:none;
+}
+
 #center {
     margin-bottom: 10px;
     text-align: center;
