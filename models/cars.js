@@ -6,7 +6,9 @@ var carSchema = new mongoose.Schema({
     model: String,
     price: Number,
     year: Number,
-    briefdescription: String
+    briefdescription: String,
+    drive: String,
+    engine: String
 });
 
 var Car = mongoose.model("Car", carSchema);

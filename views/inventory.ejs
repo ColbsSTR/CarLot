@@ -13,49 +13,158 @@
         <!----><!----><!---->
         <!--Refine search here-->
         <!----><!----><!---->
+        <form action="/cars/refined" method="POST">
           <div class="form-group row">
-            <form action="/cars/refined" method="POST">
               <div class="form-group col-sm-4">
+              <!--Make-->
                 <label for="inputMake">Select Make</label>
                   <select name="make" id="inputMake" class="form-control">
-                    <option value="Any Make">Any Make</option>
-                      <% AllCars.forEach(function(car) { %>
-                    <option value="<%=car.make%>">
-                      <%= car.make %>
-                    </option>
-                    <% }); %>
+                    <option selected value="Any Make">Any Make</option>
+                        <% Makes.forEach(function(make) { %>
+                          <% if (queryString) { %>
+                             <% if (queryString['make'] == make) { %>
+                                <option selected id="carMake" value="<%=make%>">
+                                  <%= make %>
+                                </option>
+                              <% }  else if (queryString == {}) { %>
+                                    <option selected value="Any Make">Any Make</option>
+                              <% } else { %>
+                                <option id="carMake" value="<%= make %>">
+                                  <%= make %>
+                                </option>
+                              <% } %>
+                          <% } else { %>
+                            <option id="carMake" value="<%=make%>">
+                              <%= make %>
+                            </option>
+                          <% } %>
+                        <% }); %>
                   </select>
                 </div>
+                <!--Model-->
                 <div class="form-group col-sm-4">
                   <label for="inputModel">Select Model</label>
                     <select name="model" id="inputModel" class="form-control">
-                      <option value="Any Model">Any Model</option>
-                      <% AllCars.forEach(function(car) { %>
-                        <option value="<%=car.model%>">
-                      <%= car.model %>
-                    </option>
-                  <% }); %>
+                      <option selected value="Any Model">Any Model</option>
+                      <% Models.forEach(function(model) { %>
+                          <% if (queryString) { %>
+                             <% if (queryString['model'] == model) { %>
+                                <option selected id="carModel" value="<%=model%>">
+                                  <%= model %>
+                                </option>
+                              <% }  else if (queryString == {}) { %>
+                                    <option selected value="Any Model">Any Model</option>
+                              <% } else { %>
+                                <option id="carModel" value="<%= model %>">
+                                  <%= model %>
+                                </option>
+                              <% } %>
+                          <% } else { %>
+                            <option id="carModel" value="<%=model%>">
+                              <%= model %>
+                            </option>
+                          <% } %>
+                        <% }); %>
                   </select>
                 </div>
+                <!--Year-->
                  <div class="form-group col-sm-4">
                   <label for="inputYear">Select Year</label>
                     <select name="year" id="inputYear" class="form-control">
-                      <option value="Any Year">Any Year</option>
-                      <% AllCars.forEach(function(car) { %>
-                        <option value="<%=car.year%>">
-                      <%= car.year %>
-                    </option>
-                  <% }); %>
+                      <option selected value="Any Year">Any Year</option>
+                      <% Years.forEach(function(year) { %>
+                          <% if (queryString) { %>
+                             <% if (queryString['year'] == year) { %>
+                                <option selected id="carYear" value="<%=year%>">
+                                  <%= year %>
+                                </option>
+                              <% }  else if (queryString == {}) { %>
+                                    <option selected value="Any Year">Any Year</option>
+                              <% } else { %>
+                                <option id="carYear" value="<%= year %>">
+                                  <%= year %>
+                                </option>
+                              <% } %>
+                          <% } else { %>
+                            <option id="carYear" value="<%=year%>">
+                              <%= year %>
+                            </option>
+                          <% } %>
+                        <% }); %>
                   </select>
                 </div>
-              </div>
+                </div>
+                <!--Price-->
+                <div class="row">
+                  <div class="form-group col-sm-4">
+                    <label for="inputYear">Select Price Range</label>
+                      <select name="price" id="inputPrice" class="form-control">
+                         <% if (!price) { %>
+                          <option selected value="Any Price">Any Price</option>
+                        <% } %>
+                        <% if (price) { %>
+                          <% if (price == "Any Price") { %>
+                            <option selected value="Any Price">Any Price</option>
+                          <% } else { %>
+                            <option value="Any Price">Any Price</option>
+                          <% } %>
+                          <% if (price == 5000) { %>
+                            <option selected value="5000">$5,000 and Below</option>
+                          <% } else { %>
+                              <option value="5000">$5,000 and Below</option>
+                            <% } %>
+                        <% } else { %>
+                          <option value="5000">$5,000 and Below</option>
+                        <% } %>
+                        <% if (price) { %>
+                          <% if (price == 10000) { %>
+                            <option selected value="10000">$10,000 and Below</option>
+                          <% } else { %>
+                                <option value="10000">$10,000 and Below</option>
+                              <% } %>
+                        <% } else { %>
+                          <option value="10000">$10,000 and Below</option>
+                        <% } %>
+                      <% if (price) { %>
+                          <% if (price == 20000) { %>
+                            <option selected value="20000">$20,000 and Below</option>
+                          <% } else { %>
+                              <option value="20000">$20,000 and Below</option>
+                            <% } %>
+                        <% } else { %>
+                          <option value="20000">$20,000 and Below</option>
+                        <% } %>
+                    </select>
+                </div>
+                <div class="col-lg-4">
+                  <label for="inputDrive">Select Drive Type</label>
+                    <select name="drive_type" id="inputDrive" class="form-control">
+                      <option selected value="Any Type">Any DriveType</option>
+                      <option  value="4WD">4WD</option>
+                      <option  value="2WD">2WD</option>
+                      <option  value="AWD">AWD</option>
+                    </select>
+                 </div>
+               </div>
+                
               <div class="form-group row">
-                <button type="submit" class="btn btn-primary">Search</button>
-              </form>
-          </div>
+                <div class="form-group col-sm-12">
+                    <button id="submitButton" type="submit" class="btn btn-primary">Search</button>
+                </div>
+              </div>
+           </form>
+            <!--<div class="form-group row">-->
+            <!--  <% if (queryString) { %>-->
+            <!--    <button type="button" class="btn btn-danger">-->
+            <!--      <i class="fa fa-fw fa-bicycle" aria-hidden="true"></i>-->
+            <!--      Button-->
+            <!--    </button>-->
+            <!--  <% } %>-->
+            <!--</div>-->
       </p>
     </div>
 </div>
+
 
 <% cars.forEach(function(car) { %>
 <div id="inventory-header">

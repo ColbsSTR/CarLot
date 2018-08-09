@@ -21,6 +21,24 @@
                     <input class="form-control" type="text" placeholder="Brief description" name="briefdescription">
                 </div>
                 <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <select name="drive_type" id="inputDrive" class="form-control">
+                              <option selected value="4WD">4WD</option>
+                              <option value="2WD">2WD</option>
+                              <option value="AWD">AWD</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <select name="engine_type" id="inputEngine" class="form-control">
+                              <option selected value="4cyl">4 Cylnder</option>
+                              <option value="6cyl">6 Cylnder</option>
+                              <option value="8cyl">8 Cylnder</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>
                 </div>
             </form>

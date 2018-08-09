@@ -17,14 +17,71 @@ app.use(methodOverride("_method"));
 //FUNCTIONS
 //****************
 var AllCars;
-var LoadCars = function() {
-    Car.find({}, function(err, allCars) {
+var queryString = {};
+var price;
+//var priceSelected = false;
+var LoadCars = function(make, model, year) {
+    Car.find({}, {}, {sort: {'make': 1, 'model': 1, 'year': 1}}, function(err, allCars) {
         if (err) {
             console.log(err);
         } else {
             AllCars = allCars;
         }
     });
+}
+
+var CreateMakeArray = function(cars) {
+    var MakeArray = [];
+    
+    //Loop through the cars array of objects passed in 
+    cars.forEach(function (car) {
+        //if the car is not found in the make array it will be pushed in
+        var found = MakeArray.find(function(make) {
+               return make == car.make;
+        });
+       
+         if (!found) {
+           MakeArray.push(car.make);  
+         } 
+    });
+    
+    return MakeArray;
+}
+
+var CreateModelArray = function(cars) {
+    var ModelArray = [];
+    
+    //Loop through the cars array of objects passed in 
+    cars.forEach(function (car) {
+        //if the car is not found in the model array it will be pushed in
+        var found = ModelArray.find(function(model) {
+               return model == car.model;
+        });
+       
+         if (!found) {
+           ModelArray.push(car.model);  
+         } 
+    });
+    
+    return ModelArray;
+}
+
+var CreateYearArray = function(cars) {
+    var YearArray = [];
+    
+    //Loop through the cars array of objects passed in 
+    cars.forEach(function (car) {
+        //if the car is not found in the year array it will be pushed in
+        var found = YearArray.find(function(year) {
+               return year == car.year;
+        });
+       
+         if (!found) {
+           YearArray.push(car.year);  
+         } 
+    });
+    
+    return YearArray;
 }
 
 //****************
@@ -38,11 +95,16 @@ app.get("/", function(req,res) {
 
 //Index route
 app.get("/cars", function(req,res) {
-    Car.find({}, function(err,allCars) {
+    Car.find({}, {}, {sort: {'make': 1, 'model': 1, year: -1}}, function(err,allCars) {
+        var Makes = CreateMakeArray(allCars);
+        var Models = CreateModelArray(allCars);
+        var Years = CreateYearArray(allCars);
+        
+        queryString = {};
         if (err) {
             console.log(err);
         } else {
-            res.render("inventory.ejs", {cars: allCars, AllCars: allCars});               
+            res.render("inventory.ejs", {cars: allCars, AllCars: allCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years});               
         }
     });   
 });
@@ -64,7 +126,9 @@ app.post("/cars", function(req,res) {
         model: req.body.model,
         year: req.body.year,
         price: req.body.price,
-        briefdescription: req.body.briefdescription
+        briefdescription: req.body.briefdescription,
+        drive: req.body.drive_type,
+        engine: req.body.engine_type
     };
     
     Car.create(newCar, function(err, car) {
@@ -81,10 +145,10 @@ app.post("/cars", function(req,res) {
 app.post("/cars/refined", function(req, res) {
     LoadCars();
     var AnyOption = "";
-    var queryString = "";
     var make = req.body.make;
     var model = req.body.model;
     var year = req.body.year;
+    price = req.body.price;
     
     //Delegates which aspects of the query should be anything or unique
     if (req.body.make == "Any Make") {
@@ -102,38 +166,71 @@ app.post("/cars/refined", function(req, res) {
     //Creating the Query string based off of the AnyOption Var
     switch (AnyOption) {
         case 'a':
-            queryString = {'model': model,'year': year}
+            queryString = {'model': model,'year': year};
             break;
         case 'b':
-            queryString = {'make': make,'year': year}
+            queryString = {'make': make,'year': year};
             break;
         case 'c':
-            queryString = {'make': make,'model': model}
+            queryString = {'make': make,'model': model};
             break;
         case 'ab':
-            queryString = {'year': year}
+            queryString = {'year': year};
             break;
         case 'ac':
-            queryString = {'model': model}
+            queryString = {'model': model};
             break;
         case 'bc':
-            queryString = {'make': make}
+            queryString = {'make': make};
             break;
         case 'abc':
-            queryString = {}
+            queryString = {};
             break;
         
         default:
-            queryString = {'make': make,'model': model,'year': year}
+            queryString = {'make': make,'model': model,'year': year};
     }
     
-    Car.find(queryString, 'make model year price briefdescription', function (err, cars) {
+    Car.find(queryString, 'make model year price briefdescription drive', {sort: {'make': 1, 'model': 1, 'year': 'desc'}}, function (err, cars) {
+        var Makes = CreateMakeArray(AllCars);
+        var Models = CreateModelArray(AllCars);
+        var Years = CreateYearArray(AllCars);
+        
         if (err) {
             console.log("HERES THE ERROR: " + err);
         } else {
             AnyOption = "";
-            res.render("inventory.ejs", {cars: cars, AllCars: AllCars});
+            //Array to hold the cars that match the price refinement
+            var refinedByPriceCars = [];
+            //Push the car in if it's less than or equal to price
+            if (price) {
+                if (price == "Any Price") {
+                    refinedByPriceCars = cars;
+                    } else {
+                        cars.forEach(function(car){
+                        if (car.price <= price) {
+                             refinedByPriceCars.push(car);
+                         }
+                    });
+                }
+            }
+            
+            var finalArray = [];
+            
+            if (req.body.drive_type == "Any Type") {
+                finalArray = refinedByPriceCars;
+            } else {
+                 cars.forEach(function(car){
+                   if (car.drive == req.body.drive_type) {
+                        //Push to final array
+                        finalArray.push(car);
+                    } 
+                });
+            }
         }
+            
+            res.render("inventory.ejs", {cars: finalArray, AllCars: AllCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years});
+            price = "";
     });
 });
 
