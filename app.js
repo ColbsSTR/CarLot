@@ -7,11 +7,28 @@ var mongoose = require("mongoose");
 var $ = require("jquery");
 var Car = require("./models/cars");
 var refined = false;
+var passport = require("passport");
+var LocalStrategy = require("passport-local");
+var User = require("./models/user");
 mongoose.connect("mongodb://localhost/carlot_v1");
+//mongoose.connect("mongodb://colby:colby7432@ds119442.mlab.com:19442/carlot");
+
 
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+
+// PASSPORT CONFIGURATION
+app.use(require("express-session")({
+    secret: "Once again Branny wins cutest dog!",
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 //****************
 //FUNCTIONS
@@ -19,7 +36,17 @@ app.use(methodOverride("_method"));
 var AllCars;
 var queryString = {};
 var price;
-//var priceSelected = false;
+var Drive;
+
+var newUser = new User({username: "PrecisionImports", password: "Porsche431"});
+    User.register(newUser, "Porsche431", function(err, user){
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("succes");
+        }
+    });
+    
 var LoadCars = function(make, model, year) {
     Car.find({}, {}, {sort: {'make': 1, 'model': 1, 'year': 1}}, function(err, allCars) {
         if (err) {
@@ -104,7 +131,7 @@ app.get("/cars", function(req,res) {
         if (err) {
             console.log(err);
         } else {
-            res.render("inventory.ejs", {cars: allCars, AllCars: allCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years});               
+            res.render("inventory.ejs", {cars: allCars, AllCars: allCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years, Drive:Drive});               
         }
     });   
 });
@@ -149,6 +176,7 @@ app.post("/cars/refined", function(req, res) {
     var model = req.body.model;
     var year = req.body.year;
     price = req.body.price;
+    Drive = req.body.drive_type;
     
     //Delegates which aspects of the query should be anything or unique
     if (req.body.make == "Any Make") {
@@ -217,11 +245,11 @@ app.post("/cars/refined", function(req, res) {
             
             var finalArray = [];
             
-            if (req.body.drive_type == "Any Type") {
+            if (Drive == "Any Type") {
                 finalArray = refinedByPriceCars;
             } else {
                  cars.forEach(function(car){
-                   if (car.drive == req.body.drive_type) {
+                   if (car.drive == Drive) {
                         //Push to final array
                         finalArray.push(car);
                     } 
@@ -229,11 +257,20 @@ app.post("/cars/refined", function(req, res) {
             }
         }
             
-            res.render("inventory.ejs", {cars: finalArray, AllCars: AllCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years});
+            res.render("inventory.ejs", {cars: finalArray, AllCars: AllCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years, Drive: Drive});
             price = "";
+            Drive = "";
     });
 });
 
-//
+//  ===========
+// AUTH ROUTES
+//  ===========
+
+//Show Login Form
+app.get("/login", function(req,res){
+    res.render("login.ejs");
+});
+
 //Start the server
 app.listen(process.env.PORT, process.env.IP);

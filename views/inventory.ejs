@@ -139,10 +139,41 @@
                 <div class="col-lg-4">
                   <label for="inputDrive">Select Drive Type</label>
                     <select name="drive_type" id="inputDrive" class="form-control">
-                      <option selected value="Any Type">Any DriveType</option>
-                      <option  value="4WD">4WD</option>
-                      <option  value="2WD">2WD</option>
-                      <option  value="AWD">AWD</option>
+                       <% if (!Drive) { %>
+                          <option selected value="Any Type">Any DriveType</option>
+                        <% } %>
+                        <% if (Drive) { %>
+                          <% if (Drive == "Any Type") { %>
+                            <option selected value="Any Type">Any DriveType</option>
+                          <% } else { %>
+                            <option value="Any Drive">Any DriveType</option>
+                          <% } %>
+                          <% if (Drive == "4WD") { %>
+                            <option selected value="4WD">4WD</option>
+                          <% } else { %>
+                              <option value="4WD">4WD</option>
+                            <% } %>
+                        <% } else { %>
+                          <option value="4WD">4WD</option>
+                        <% } %>
+                        <% if (Drive) { %>
+                          <% if (Drive == "2WD") { %>
+                            <option selected value="2WD">2WD</option>
+                          <% } else { %>
+                                <option value="2WD">2WD</option>
+                              <% } %>
+                        <% } else { %>
+                          <option value="2WD">2WD</option>
+                        <% } %>
+                      <% if (Drive) { %>
+                          <% if (Drive == "AWD") { %>
+                            <option selected value="AWD">AWD</option>
+                          <% } else { %>
+                              <option value="AWD">AWD</option>
+                            <% } %>
+                        <% } else { %>
+                          <option value="AWD">AWD</option>
+                        <% } %>
                     </select>
                  </div>
                </div>
