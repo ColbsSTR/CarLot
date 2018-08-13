@@ -10,6 +10,8 @@ var refined = false;
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
+var middleWare = require("./middleware");
+
 mongoose.connect("mongodb://localhost/carlot_v1");
 //mongoose.connect("mongodb://colby:colby7432@ds119442.mlab.com:19442/carlot");
 
@@ -24,11 +26,24 @@ app.use(require("express-session")({
     resave: false,
     saveUninitialized: false
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
+//Pass current user to all routes
+app.use(function(req, res, next) {
+    res.locals.currentUser = req.user;
+    next();
+});
+
+// caching disabled for every route
+app.use(function(req, res, next) {
+  res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
+  next();
+});
 
 //****************
 //FUNCTIONS
@@ -38,14 +53,6 @@ var queryString = {};
 var price;
 var Drive;
 
-var newUser = new User({username: "PrecisionImports", password: "Porsche431"});
-    User.register(newUser, "Porsche431", function(err, user){
-        if (err) {
-            console.log(err);
-        } else {
-            console.log("succes");
-        }
-    });
     
 var LoadCars = function(make, model, year) {
     Car.find({}, {}, {sort: {'make': 1, 'model': 1, 'year': 1}}, function(err, allCars) {
@@ -137,7 +144,7 @@ app.get("/cars", function(req,res) {
 });
 
 //NEW Route
-app.get("/cars/new", function(req, res) {
+app.get("/cars/new", middleWare.isLoggedIn,function(req, res) {
     res.render("new.ejs");
 });
 
@@ -147,7 +154,7 @@ app.get("/information", function(req, res) {
 });
 
 //CREATE Route
-app.post("/cars", function(req,res) {
+app.post("/cars", middleWare.isLoggedIn,function(req,res) {
     var newCar = {
         make: req.body.make,
         model: req.body.model,
@@ -270,6 +277,21 @@ app.post("/cars/refined", function(req, res) {
 //Show Login Form
 app.get("/login", function(req,res){
     res.render("login.ejs");
+});
+
+app.post("/login", passport.authenticate("local", 
+    {
+        successRedirect: "/cars",
+        failureRedirect: "/login",
+        //failureFlash: true,
+        //successFlash: 'Welcome to YelpCamp!'
+    }),
+    function(req, res) {
+});
+
+app.get("/logout", function(req, res) {
+    req.logout();
+    res.redirect("/cars");
 });
 
 //Start the server

@@ -6,7 +6,9 @@
       <div id="same-line">
         <p class="lead">All current cars are listed here. Feel free to refine your search below.</p>
         <!--Will need to be hidden if not logged in-->
-        <a class="btn btn-primary" href="/cars/new" role="button">Add new Car</a>
+        <% if (currentUser) { %>
+          <a class="btn btn-primary" href="/cars/new" role="button">Add new Car</a>
+        <% } %>
       </div>
       <hr class="my-4">
       <p class="lead">
