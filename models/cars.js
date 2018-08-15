@@ -8,7 +8,8 @@ var carSchema = new mongoose.Schema({
     year: Number,
     briefdescription: String,
     drive: String,
-    engine: String
+    engine: String,
+    image: String
 });
 
 var Car = mongoose.model("Car", carSchema);

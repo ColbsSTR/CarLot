@@ -11,35 +11,75 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local");
 var User = require("./models/user");
 var middleWare = require("./middleware");
+var flash = require("connect-flash");
+var multer = require('multer');
+var storage = multer.diskStorage({
+  filename: function(req, file, callback) {
+    callback(null, Date.now() + file.originalname);
+  }
+});
+var imageFilter = function (req, file, cb) {
+    // accept image files only
+    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
+        return cb(new Error('Only image files are allowed!'), false);
+    }
+    cb(null, true);
+};
+var upload = multer({ storage: storage, fileFilter: imageFilter})
 
-mongoose.connect("mongodb://localhost/carlot_v1");
+var cloudinary = require('cloudinary');
+cloudinary.config({ 
+  cloud_name: 'precisionimports', 
+  api_key: 816376549971795, 
+  api_secret: 'BDJm-iDZpthRvw1x-mvN_4zsrCk'
+});
+
+
+//***********************
+//CONNECTION TO MONGODB
+//***********************
+mongoose.connect("mongodb://localhost/carlot_v2");
 //mongoose.connect("mongodb://colby:colby7432@ds119442.mlab.com:19442/carlot");
 
 
+//***********************
+// STANDARD SETUP
+//***********************
 app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(methodOverride("_method"));
+app.use(flash());
 
+
+//***********************
 // PASSPORT CONFIGURATION
+//***********************
 app.use(require("express-session")({
     secret: "Once again Branny wins cutest dog!",
     resave: false,
     saveUninitialized: false
 }));
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-//Pass current user to all routes
+
+
+//**********************************************
+// PASS USER AND FLASH MESSAGES TO ALL TEMPLATES
+//**********************************************
 app.use(function(req, res, next) {
     res.locals.currentUser = req.user;
+    res.locals.success = req.flash("success");
+    res.locals.error = req.flash("error");
     next();
 });
 
-// caching disabled for every route
+//******************************
+// DISABLE CACHING ON ALL ROUTES
+//******************************
 app.use(function(req, res, next) {
   res.set('Cache-Control', 'no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0');
   next();
@@ -53,7 +93,6 @@ var queryString = {};
 var price;
 var Drive;
 
-    
 var LoadCars = function(make, model, year) {
     Car.find({}, {}, {sort: {'make': 1, 'model': 1, 'year': 1}}, function(err, allCars) {
         if (err) {
@@ -118,6 +157,7 @@ var CreateYearArray = function(cars) {
     return YearArray;
 }
 
+
 //****************
 //ROUTES
 //****************
@@ -154,7 +194,11 @@ app.get("/information", function(req, res) {
 });
 
 //CREATE Route
-app.post("/cars", middleWare.isLoggedIn,function(req,res) {
+app.post("/cars", middleWare.isLoggedIn, upload.single('image'), function(req,res) {
+    cloudinary.uploader.upload(req.file.path, function(result) {
+    // add cloudinary url for the image to the campground object under image property
+    req.body.image = result.secure_url;
+    
     var newCar = {
         make: req.body.make,
         model: req.body.model,
@@ -162,18 +206,21 @@ app.post("/cars", middleWare.isLoggedIn,function(req,res) {
         price: req.body.price,
         briefdescription: req.body.briefdescription,
         drive: req.body.drive_type,
-        engine: req.body.engine_type
+        engine: req.body.engine_type,
+        image: req.body.image
     };
-    
-    Car.create(newCar, function(err, car) {
+      
+      Car.create(newCar, function(err, car) {
         if (err) {
-            console.log(err);
-        } else {
-            res.redirect("/cars");
+          req.flash('error', err.message);
+          return res.redirect('back');
         }
-    });
+        console.log(car);
+        req.flash("success", "Successfully added new car.");
+        res.redirect("/cars");
+      });
+    });              
 });
-
 
 //Refined Inventory
 app.post("/cars/refined", function(req, res) {
@@ -283,14 +330,15 @@ app.post("/login", passport.authenticate("local",
     {
         successRedirect: "/cars",
         failureRedirect: "/login",
-        //failureFlash: true,
-        //successFlash: 'Welcome to YelpCamp!'
+        failureFlash: true,
+        successFlash: 'Welcome James!'
     }),
     function(req, res) {
 });
 
 app.get("/logout", function(req, res) {
     req.logout();
+    req.flash("success", "Logged out successfully!");
     res.redirect("/cars");
 });
 

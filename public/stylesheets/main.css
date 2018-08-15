@@ -45,6 +45,10 @@ div hr {
   background:none;
 }
 
+.capitalize {
+    text-transform: capitalize;
+}
+
 #center {
     margin-bottom: 10px;
     text-align: center;
