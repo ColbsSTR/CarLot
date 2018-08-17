@@ -194,17 +194,22 @@ app.get("/information", function(req, res) {
 });
 
 //CREATE Route
-app.post("/cars", middleWare.isLoggedIn, upload.single('image'), function(req,res) {
-    cloudinary.uploader.upload(req.file.path, function(result) {
-    // add cloudinary url for the image to the campground object under image property
-    req.body.image = result.secure_url;
+app.post("/cars", middleWare.isLoggedIn, upload.array('image'), async function(req,res) {
+    var newCar;
     
-    var newCar = {
+    req.body.image = [];
+    for (const file of req.files) {
+        let result = await cloudinary.uploader.upload(file.path);
+        req.body.image.push(result.secure_url);
+    }
+
+    
+    newCar = {
         make: req.body.make,
         model: req.body.model,
         year: req.body.year,
         price: req.body.price,
-        briefdescription: req.body.briefdescription,
+        description: req.body.description,
         drive: req.body.drive_type,
         engine: req.body.engine_type,
         image: req.body.image
@@ -220,7 +225,6 @@ app.post("/cars", middleWare.isLoggedIn, upload.single('image'), function(req,re
         res.redirect("/cars");
       });
     });              
-});
 
 //Refined Inventory
 app.post("/cars/refined", function(req, res) {
@@ -273,7 +277,7 @@ app.post("/cars/refined", function(req, res) {
             queryString = {'make': make,'model': model,'year': year};
     }
     
-    Car.find(queryString, 'make model year price briefdescription drive', {sort: {'make': 1, 'model': 1, 'year': 'desc'}}, function (err, cars) {
+    Car.find(queryString, 'make model year price description drive image', {sort: {'make': 1, 'model': 1, 'year': 'desc'}}, function (err, cars) {
         var Makes = CreateMakeArray(AllCars);
         var Models = CreateModelArray(AllCars);
         var Years = CreateYearArray(AllCars);
@@ -314,6 +318,16 @@ app.post("/cars/refined", function(req, res) {
             res.render("inventory.ejs", {cars: finalArray, AllCars: AllCars, queryString: queryString, price: price, Makes: Makes, Models: Models, Years: Years, Drive: Drive});
             price = "";
             Drive = "";
+    });
+});
+
+app.get("/cars/:id", function(req, res) {
+    Car.findById(req.params.id, function(err, foundCar) {
+        if (err) {
+            req.flash("error", "Could not load car.");
+        } else {
+            res.render("show.ejs", {car: foundCar});
+        }
     });
 });
 

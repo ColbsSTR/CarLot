@@ -19,10 +19,20 @@ div hr {
     background-color: #333; /* Modern Browsers */
 }
 
+img {
+    min-height:100%;
+}
+
+
 .Important {
     font-weight: bold;
     color: red;
     padding: 15px;
+}
+
+.flex {
+  display: flex;
+  flex-wrap: wrap;
 }
 
 .centered-div {
