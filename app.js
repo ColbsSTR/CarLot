@@ -212,7 +212,9 @@ app.post("/cars", middleWare.isLoggedIn, upload.array('image'), async function(r
         description: req.body.description,
         drive: req.body.drive_type,
         engine: req.body.engine_type,
-        image: req.body.image
+        image: req.body.image,
+        mileage: req.body.mileage,
+        mpg: req.body.mpg
     };
       
       Car.create(newCar, function(err, car) {
@@ -277,7 +279,7 @@ app.post("/cars/refined", function(req, res) {
             queryString = {'make': make,'model': model,'year': year};
     }
     
-    Car.find(queryString, 'make model year price description drive image', {sort: {'make': 1, 'model': 1, 'year': 'desc'}}, function (err, cars) {
+    Car.find(queryString, 'make model year price description drive image mileage mpg', {sort: {'make': 1, 'model': 1, 'year': 'desc'}}, function (err, cars) {
         var Makes = CreateMakeArray(AllCars);
         var Models = CreateModelArray(AllCars);
         var Years = CreateYearArray(AllCars);
@@ -321,6 +323,7 @@ app.post("/cars/refined", function(req, res) {
     });
 });
 
+//SHOW ROUTE
 app.get("/cars/:id", function(req, res) {
     Car.findById(req.params.id, function(err, foundCar) {
         if (err) {

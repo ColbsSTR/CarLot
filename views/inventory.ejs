@@ -11,7 +11,7 @@
           <a class="btn btn-primary" href="/cars/new" role="button">Add new Car</a>
         <% } %>
       </div>
-      <hr class="my-4">
+      <hr id="boldHR" class="my-4">
       <p class="lead">
         <!----><!----><!---->
         <!--Refine search here-->
@@ -99,7 +99,7 @@
                 </div>
                 <!--Price-->
                 <div class="row">
-                  <div class="form-group col-sm-4">
+                  <div class="form-group col-md-4">
                     <label for="inputYear">Select Price Range</label>
                       <select name="price" id="inputPrice" class="form-control">
                          <% if (!price) { %>
@@ -139,8 +139,7 @@
                         <% } %>
                     </select>
                 </div>
-                <div class="row">
-                  <div class="form-group col-sm-4">
+                  <div class="form-group col-md-4">
                   <label for="inputDrive">Select Drive Type</label>
                     <select name="drive_type" id="inputDrive" class="form-control">
                        <% if (!Drive) { %>
@@ -181,10 +180,9 @@
                     </select>
                  </div>
                </div>
-                </div>
-                
+               
               <div class="form-group row">
-                <div class="form-group col-sm-12">
+                <div class="form-group col-md-6">
                     <button id="submitButton" type="submit" class="btn btn-primary">Search</button>
                 </div>
               </div>
@@ -201,23 +199,29 @@
     </div>
 </div>
 
-<div class="list-group">
-<div class="container">
-  <div class="row flex">
+<!--Each Car listing-->
+  <div class="row">
     <% cars.forEach(function(car) { %>
-      <div class="col-sm-6 col-md-4">
-        <div class="thumbnail">
-          <img src="<%= car.image[0] %>">
-          <div class="caption">
-            <h3><%= car.make %> <%= car.model %></h3>
-            <p><%= car.description %></p>
-            <p><a href="/cars/<%= car._id %>" class="btn btn-primary" role="button">More Information</a></p>
+    <div class="col-lg-4 col-md-6">
+      <div class="card">
+        <img class="card-img-top img-thumbnail img-fluid" style="max-width: 100%; height: auto;" src="<%= car.image[0] %>" alt="Card image cap">
+        <div class="card-body">
+          <h5 class="card-title"><%= car.make %> <%= car.model %></h5>
+          <div class="row" style="padding-bottom: 10px">
+            <div class="col-md-6">
+              <p class="card-text">$<%= car.price %>.00</p>
+            </div>
+            <div class="col-md-6">
+              <p style="float: right" class="card-text"><%= car.mileage %></p>
+            </div>
           </div>
+          <a href="/cars/<%= car._id %>" class="btn btn-primary btn-block">More Info</a>
         </div>
       </div>
-    <% }); %>
+    </div>
+      <% }); %>
   </div>
 </div>
-</div>
+
 
 <% include ./partials/footer.ejs %>

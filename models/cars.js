@@ -12,7 +12,9 @@ var carSchema = new mongoose.Schema({
     image: 
     [{
         type: String
-    }]
+    }],
+    mileage: Number,
+    mpg: String
 });
 
 var Car = mongoose.model("Car", carSchema);
