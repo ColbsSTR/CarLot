@@ -13,6 +13,10 @@ var carSchema = new mongoose.Schema({
     [{
         type: String
     }],
+    image_id: 
+    [{
+        type: String
+    }],
     mileage: Number,
     mpg: String
 });

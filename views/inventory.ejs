@@ -206,7 +206,14 @@
       <div class="card">
         <img class="card-img-top img-thumbnail img-fluid" style="max-width: 100%; height: auto;" src="<%= car.image[0] %>" alt="Card image cap">
         <div class="card-body">
-          <h5 class="card-title"><%= car.make %> <%= car.model %></h5>
+          <h5 class="card-title" style="display: inline"><%= car.make %> <%= car.model %></h5>
+          <% if (currentUser) { %>
+          <form style="display: inline" action="/cars/<%= car._id %>?_method=DELETE" method="POST">
+            <button style="float: right">
+              <icon class="fas fa-trash-alt"></icon>
+            </button>
+          </form>
+          <% } %>
           <div class="row" style="padding-bottom: 10px">
             <div class="col-md-6">
               <p class="card-text">$<%= car.price %>.00</p>

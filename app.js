@@ -198,9 +198,11 @@ app.post("/cars", middleWare.isLoggedIn, upload.array('image'), async function(r
     var newCar;
     
     req.body.image = [];
+    req.body.image_id = [];
     for (const file of req.files) {
         let result = await cloudinary.uploader.upload(file.path);
         req.body.image.push(result.secure_url);
+        req.body.image_id.push(result.public_id);
     }
 
     
@@ -213,6 +215,7 @@ app.post("/cars", middleWare.isLoggedIn, upload.array('image'), async function(r
         drive: req.body.drive_type,
         engine: req.body.engine_type,
         image: req.body.image,
+        image_id: req.body.image_id,
         mileage: req.body.mileage,
         mpg: req.body.mpg
     };
@@ -332,6 +335,26 @@ app.get("/cars/:id", function(req, res) {
             res.render("show.ejs", {car: foundCar});
         }
     });
+});
+
+//DELETE ROUTE
+app.delete("/cars/:id", function(req,res) {
+    Car.findById(req.params.id, async function(err, car) {
+        if (err) {
+            req.flash("error", err);
+        } else {
+            for (const image_id of car.image_id) {
+                let result = await cloudinary.v2.uploader.destroy(image_id);
+            }
+            Car.findByIdAndRemove(req.params.id, function(err) {
+                if (err) {
+                    req.flash("error", err.message);
+                    res.redirect("back");
+                }
+            });
+            res.redirect("/cars");
+        }
+    })
 });
 
 //  ===========
