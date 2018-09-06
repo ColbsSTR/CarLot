@@ -38,8 +38,8 @@ cloudinary.config({
 //***********************
 //CONNECTION TO MONGODB
 //***********************
-mongoose.connect("mongodb://localhost/carlot_v2");
-//mongoose.connect("mongodb://colby:colby7432@ds119442.mlab.com:19442/carlot");
+// mongoose.connect("mongodb://localhost/carlot_v2");
+mongoose.connect("mongodb://colby:colby7432@ds119442.mlab.com:19442/carlot");
 
 
 //***********************
