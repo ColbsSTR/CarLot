@@ -47,6 +47,12 @@ img {
     text-transform: capitalize;
 }
 
+#content-container {
+  width: 87%; 
+  display:block; 
+  margin:auto;
+}
+
 #center {
     margin-bottom: 10px;
     text-align: center;
@@ -76,6 +82,8 @@ img {
     color: #333; /* old IE */
     background-color: #333; /* Modern Browsers */
 }
+
+
 
 .carousel-inner > .item > img {
     margin: 0 auto;
